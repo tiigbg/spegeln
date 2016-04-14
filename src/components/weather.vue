@@ -1,15 +1,8 @@
 <template>
-  <div class="hello">
-    <div id="weather"></div>
-    <h1 v-on:click="updateLocation">{{ msg }}</h1>
-    <h2>{{accessToken}}</h2>
-    <pre>{{locationData | json}}</pre>
-    <!-- <pre>{{response | json}}</pre> -->
-  </div>
+  <div id="weather"></div>
 </template>
 
 <script>
-// var $ = require('jquery');
 export default {
   data () {
     return {
@@ -19,31 +12,11 @@ export default {
       msg: 'Hellooo World!',
       accessToken: '',
       locationData: 'bläää',
+      bottomMessage: 'Lorem Ipsum',
       response: ''
     }
   },
   methods: {
-    updateLocation(){
-      this.$http.get('https://api.vasttrafik.se/bin/rest.exe/v2/location.name', 
-        null,
-        {
-          params: {
-            format: 'json',
-            input: 'lindholmen',
-          },
-          headers: {
-            Authorization: this.accessToken,
-          }
-        }).then(
-          function(response){
-            this.locationData = response.data;
-          },
-          function(response){
-            this.msg = 'dålig response när jag försökte använda token';
-          }
-        );
-      setTimeout(this.updateLocation, 10000);
-    },
     getWeather(){
       $(document).ready(function() {
         $.simpleWeather({
@@ -67,36 +40,22 @@ export default {
   },
   ready: function(){
     this.getWeather();
-    this.$http.post('https://api.vasttrafik.se/token',
-      {
-        grant_type: 'client_credentials',
-        scope: 'device_555'
-      },
-      {
-        headers: {
-          Authorization: 'Basic TEJaemp3cFM3OTVIdzJKMm1SMWxIcVcxOWFrYTo0QWxRZUZsZjlQTTlGUjA1Q3ZSaVlfNlQzNW9h',
-        },
-        emulateJSON: true,
-      }).then(
-        function(response){
-          this.msg = 'ja! fick svar';
-          this.accessToken = response.data.token_type
-            + ' ' 
-            + response.data.access_token;
-          this.response = response;
-
-          this.updateLocation();
-        },
-        function(response){
-          this.msg = 'Inget svar!';
-          this.response = response.data;
-        }
-      );
   }
 }
 </script>
 
 <style>
+
+@font-face {
+    font-family: 'weather';
+    src: url('../../assets/fonts/weather_icons/artill_clean_icons.otf');
+    /*src: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/93/artill_clean_icons-webfont.eot?#iefix') format('embedded-opentype'),
+         url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/93/artill_clean_icons-webfont.woff') format('woff'),
+         url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/93/artill_clean_icons-webfont.ttf') format('truetype'),
+         url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/93/artill_clean_icons-webfont.svg#artill_clean_weather_iconsRg') format('svg');*/
+    font-weight: normal;
+    font-style: normal;
+}
 
 
 .icon-0:before { content: ":"; }
@@ -147,6 +106,16 @@ export default {
 .icon-45:before { content: "S"; }
 .icon-46:before { content: "U"; }
 .icon-47:before { content: "S"; }
+
+i {
+  /*color: #fff;*/
+  font-family: weather;
+  font-size: 150px;
+  font-weight: normal;
+  font-style: normal;
+  line-height: 1.0;
+  text-transform: none;
+}
 
 #weather {
   width: 500px;

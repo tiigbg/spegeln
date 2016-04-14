@@ -1,22 +1,30 @@
 <template>
   <div id="app">
-    <hello></hello>
+    <weather></weather>
+    <bottom-message></bottom-message>
+    <bus-table></bus-table>
   </div>
 </template>
 
 <script>
-import Hello from './components/Hello.vue'
+import busTable from './components/busTable.vue'
+import weather from './components/weather.vue'
+import bottomMessage from './components/bottomMessage.vue'
 
 export default {
   components: {
-    Hello
+    busTable,
+    weather,
+    bottomMessage
   }
 }
 </script>
 
 <style>
 body {
-	cursor: none;
+	/*cursor: none;*/
+  background-color: black;
+  color: white;
   font-family: Helvetica, sans-serif;
 }
 </style>
