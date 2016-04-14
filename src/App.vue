@@ -16,6 +16,7 @@ export default {
 
 <style>
 body {
+	cursor: none;
   font-family: Helvetica, sans-serif;
 }
 </style>
