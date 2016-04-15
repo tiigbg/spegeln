@@ -24,7 +24,7 @@ export default {
           to:{
             stenpiren:{
               stop:{},
-              departures:{},
+              departures: [],
             },
           }
         },
@@ -33,7 +33,7 @@ export default {
           to:{
             regnbågsgatan:{
               stop:{},
-              departures:{},
+              departures: [],
             },
           }
         },
@@ -42,7 +42,7 @@ export default {
           to:{
             regnbågsgatan:{
               stop: {},
-              departures: {}
+              departures: [],
             },
           }
         },
@@ -153,7 +153,7 @@ export default {
         }).then(
           function(response){
             // this.$set('departureBoard.'+name, response.data.DepartureBoard);
-            this.boards[response.request.params.from].to[response.request.params.to].departures = response.data.DepartureBoard;
+            this.boards[response.request.params.from].to[response.request.params.to].departures = response.data.DepartureBoard.Departure;
           },
           function(response){
             // this.boards[response.request.params.from].to[response.request.params.to].departures = 'dålig response när jag försökte hämta avgångar för hållplats '+fromObj.stop.name;
