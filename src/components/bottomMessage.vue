@@ -1,5 +1,5 @@
 <template>
-    <h2>bottomMessage: {{bottomMessage}}</h2>
+    <h2 id="message">{{bottomMessage}}</h2>
 </template>
 
 <script>
@@ -7,7 +7,7 @@
 export default {
   data () {
     return {
-      bottomMessage: 'Lorem Ipsum',
+      bottomMessage: 'So static message. Much not dynamic. Such WOW!',
     }
   },
   methods: {
@@ -17,7 +17,7 @@ export default {
           this.bottomMessage = response.data;
         },
         function(response){
-          this.bottomMessage = 'Lyckades inte hämta meddelande :-(';
+          // this.bottomMessage = 'So static message. Much not dynamic. Such WOW!';
         }
       );
       setTimeout(this.getMessage, 4000);
@@ -30,5 +30,15 @@ export default {
 </script>
 
 <style>
+
+#message {
+  font-size: 3em;
+  font-family: 'Covered By Your Grace', cursive;
+  word-wrap: break-word;
+  /*margin-bottom: 10px;*/
+  /*position: absolute;*/
+  /*bottom: 10px;*/
+}
+
 
 </style>

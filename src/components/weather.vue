@@ -48,7 +48,7 @@ export default {
 
 @font-face {
     font-family: 'weather';
-    src: url('../../assets/fonts/weather_icons/artill_clean_icons.otf');
+    src: url("assets/fonts/weather_icons/artill_clean_icons.otf");
     /*src: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/93/artill_clean_icons-webfont.eot?#iefix') format('embedded-opentype'),
          url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/93/artill_clean_icons-webfont.woff') format('woff'),
          url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/93/artill_clean_icons-webfont.ttf') format('truetype'),
@@ -109,11 +109,12 @@ export default {
 
 i {
   /*color: #fff;*/
+  /*margin-top: -30px;*/
   font-family: weather;
   font-size: 150px;
   font-weight: normal;
   font-style: normal;
-  line-height: 1.0;
+  line-height: 0.7;
   text-transform: none;
 }
 
@@ -139,8 +140,8 @@ i {
 }
 
 #weather li {
-  background: #fff;
-  background: rgba(255,255,255,0.90);
+  /*background: #fff;*/
+  /*background: rgba(255,255,255,0.90);*/
   padding: 20px;
   display: inline-block;
   border-radius: 5px;
