@@ -247,6 +247,31 @@ export default {
           }
         );
     },
+    getNewKey(){
+      this.$http.post('https://api.vasttrafik.se/token',
+      {
+        grant_type: 'client_credentials',
+        scope: 'device_555'
+      },
+      {
+        headers: {
+          Authorization: 'Basic TEJaemp3cFM3OTVIdzJKMm1SMWxIcVcxOWFrYTo0QWxRZUZsZjlQTTlGUjA1Q3ZSaVlfNlQzNW9h', //This is our client secret.
+        },
+        emulateJSON: true,
+      }).then(
+        function(response){
+          this.msg = 'ja! fick svar';
+          this.accessToken = response.data.token_type
+            + ' ' 
+            + response.data.access_token;
+          this.response = response;
+        },
+        function(response){
+          this.msg = 'Inget svar!';
+          this.response = response.data;
+        }
+      );
+    },
     // setNeighbourLocations(locationObject){
     //   this.$http.get('https://api.vasttrafik.se/bin/rest.exe/v2/location.nearbystops', 
     //     null,
@@ -298,6 +323,8 @@ export default {
           this.response = response.data;
         }
       );
+
+    setInterval(this.getNewKey, 3300000);
 
     setInterval(function(){
       this.now = Date.now();
