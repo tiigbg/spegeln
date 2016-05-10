@@ -62,26 +62,30 @@ export default {
           }
         },
       },
-      departureBoard: {},
+      // departureBoard: {},
       now: Date.now(),
+      // timeSortedList: [],
     }
   },
   computed: {
-    // blinkTopOne: function(){
-    //   // return false;
-    //   if(!this.timeSortedList[0]){
-    //     return false;
-    //   }
-    //   // var departTime = new Date(this.timeSortedList[0].date+' '+this.timeSortedList[0].time);
-    //   var diff = (new Date(this.timeSortedList[0].date+' '+this.timeSortedList[0].time) - this.now) /1000 / 60;
-    //   // console.log(diff);
-    //   if(diff < 4){
-    //     return true;
-    //   }else{
-    //     return false;
-    //   }
-    // },
+    blinkTopOne: function(){
+      // return false;
+      if(!this.timeSortedList[0]){
+        return false;
+      }
+      // var departTime = new Date(this.timeSortedList[0].date+' '+this.timeSortedList[0].time);
+      var diff = (new Date(this.timeSortedList[0].date+' '+this.timeSortedList[0].time) - this.now) /1000 / 60;
+      // console.log(diff);
+      if(diff < 4){
+        return true;
+      }else{
+        return false;
+      }
+    },
     untilNext: function(){
+      if(!this.timeSortedList[0]){
+        return '';
+      }
       return (new Date(this.timeSortedList[0].date+' '+this.timeSortedList[0].time) - this.now) /1000 / 60;
     },
     timeSortedList: function(){
@@ -96,6 +100,10 @@ export default {
             }
           }
         }
+      }
+      if(!list){
+        console.log("empty timeSortedList!");
+        return '';
       }
       list.sort(function(a, b){
         a = new Date(a.date+' '+a.time);
@@ -114,6 +122,39 @@ export default {
     },
   },
   methods: {
+    // updateTimeSortedList(){
+    //   console.log("updating timeSortedList");
+    //   var list = [];
+    //   for(stopName in this.boards){
+    //     if(this.boards.hasOwnProperty(stopName)){
+    //       for(destName in this.boards[stopName].to){
+    //         if(this.boards[stopName].to.hasOwnProperty(destName)){
+    //           if(this.boards[stopName].to[destName].departures){
+    //             list = list.concat(this.boards[stopName].to[destName].departures);
+    //           }
+    //         }
+    //       }
+    //     }
+    //   }
+    //   if(!list){
+    //     console.log("empty timeSortedList!");
+    //     return '';
+    //   }
+    //   list.sort(function(a, b){
+    //     a = new Date(a.date+' '+a.time);
+    //     b = new Date(b.date+' '+b.time);
+    //     return a<b?-1:a>b?1:0;
+    //   });
+    //   // var i = list.length;
+    //   // while(i--){
+    //   //   var diff = (new Date(list[i].date+' '+list[i].time) - this.now) /1000 / 60;
+    //   //   list[i].blink = diff < 4;
+    //   //   if(diff< 0){
+    //   //     list.splice(i, 1);
+    //   //   }
+    //   // }
+    //   this.timeSortedList = list;
+    // },
     getLocationObject(name, successCallback, param2){
       this.$http.get('https://api.vasttrafik.se/bin/rest.exe/v2/location.name', 
         null,
@@ -227,7 +268,7 @@ export default {
             format: 'json',
             id: fromObj.stop.id,
             date: moment().format('YYYY-MM-DD'),
-            time: moment().format('hh.mm'),
+            time: moment().format('HH.mm'),
             timeSpan: 360,
             maxDeparturesPerLine: 3,
             direction: toObj.stop.id,
@@ -272,27 +313,6 @@ export default {
         }
       );
     },
-    // setNeighbourLocations(locationObject){
-    //   this.$http.get('https://api.vasttrafik.se/bin/rest.exe/v2/location.nearbystops', 
-    //     null,
-    //     {
-    //       params: {
-    //         format: 'json',
-    //         originCoordLat: locationObject.stop.lat,
-    //         originCoordLong: locationObject.stop.lon,
-    //       },
-    //       headers: {
-    //         Authorization: this.accessToken,
-    //       }
-    //     }).then(
-    //       function(response){
-    //         locationObject.neighbours =  response.data.LocationList.StopLocation;
-    //       },
-    //       function(response){
-    //         locationObject.neighbours =  "skit också!";
-    //       }
-    //     );
-    // }
   },
   ready: function(){
     //Set up authorization with västtrafik API
@@ -316,6 +336,7 @@ export default {
 
           //Ok. let's fetch our stops according to the structure in the data-object
           this.setLocationData();
+          // setInterval(this.updateTimeSortedList, 10000);
           setInterval(this.setLocationData, 30000);
         },
         function(response){
@@ -324,7 +345,7 @@ export default {
         }
       );
 
-    setInterval(this.getNewKey, 3300000);
+    // setInterval(this.getNewKey, 3300000);
 
     setInterval(function(){
       this.now = Date.now();
