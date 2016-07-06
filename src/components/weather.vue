@@ -9,11 +9,11 @@ export default {
       // Note: modifying `msg` below will not cause changes to occur with
       // hot-reload. As reloaded components preserve their initial state,
       // modifying these values will have no effect.
-      msg: 'Hellooo World!',
-      accessToken: '',
-      locationData: 'bläää',
-      bottomMessage: 'Lorem Ipsum',
-      response: ''
+      // msg: 'Hellooo World!',
+      // accessToken: '',
+      // locationData: 'bläää',
+      // bottomMessage: 'Lorem Ipsum',
+      // response: ''
     }
   },
   methods: {
@@ -25,7 +25,7 @@ export default {
           unit: 'c',
           success: function(weather) {
             html = '<h2><i class="icon-'+weather.code+'"></i> '+weather.temp+'&deg;'+weather.units.temp+'</h2>';
-            //html += '<ul><li>'+weather.city+', '+weather.region+'</li>';
+            html += '<ul><li>'+weather.city+', '+weather.region+'</li>';
             html += '<li class="currently">'+weather.currently+'</li>';
             html += '<li>'+weather.wind.direction+' '+weather.wind.speed+' '+weather.units.speed+'</li></ul>';
         
@@ -40,6 +40,7 @@ export default {
   },
   ready: function(){
     this.getWeather();
+    setInterval(this.getWeather, 120000);
   }
 }
 </script>
