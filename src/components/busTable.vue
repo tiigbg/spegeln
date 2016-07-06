@@ -63,30 +63,34 @@ export default {
         },
       },
       // departureBoard: {},
-      now: Date.now(),
+      now: new Date(),
       // timeSortedList: [],
     }
   },
   computed: {
-    blinkTopOne: function(){
-      // return false;
-      if(!this.timeSortedList[0]){
-        return false;
-      }
-      // var departTime = new Date(this.timeSortedList[0].date+' '+this.timeSortedList[0].time);
-      var diff = (new Date(this.timeSortedList[0].date+' '+this.timeSortedList[0].time) - this.now) /1000 / 60;
-      // console.log(diff);
-      if(diff < 4){
-        return true;
-      }else{
-        return false;
-      }
-    },
+    // blinkTopOne: function(){
+    //   // return false;
+    //   if(!this.timeSortedList[0]){
+    //     return false;
+    //   }
+    //   // var departTime = new Date(this.timeSortedList[0].date+' '+this.timeSortedList[0].time);
+    //   var diff = (new Date(this.timeSortedList[0].date+' '+this.timeSortedList[0].time) - this.now) /1000 / 60;
+    //   // console.log(diff);
+    //   if(diff < 4){
+    //     return true;
+    //   }else{
+    //     return false;
+    //   }
+    // },
     untilNext: function(){
       if(!this.timeSortedList[0]){
         return '';
       }
-      return (new Date(this.timeSortedList[0].date+' '+this.timeSortedList[0].time) - this.now) /1000 / 60;
+      // var nextDep = new Date(this.timeSortedList[0].date+' '+this.timeSortedList[0].time);
+      // var result = (nextDep - this.now) /1000 / 60;
+      // return result;
+
+      return this.timeSortedList[0].untilDeparture;
     },
     timeSortedList: function(){
       list = [];
@@ -105,19 +109,35 @@ export default {
         console.log("empty timeSortedList!");
         return '';
       }
-      list.sort(function(a, b){
-        a = new Date(a.date+' '+a.time);
-        b = new Date(b.date+' '+b.time);
-        return a<b?-1:a>b?1:0;
-      });
+
       var i = list.length;
       while(i--){
-        var diff = (new Date(list[i].date+' '+list[i].time) - this.now) /1000 / 60;
+        // list[i].departTime = new Date(list[i].date+' '+list[i].time);
+        // list[i].departTime = list[i].date.substr(0,4) + '_' + list[i].date.substr(5,2) + '_' + list[i].date.substr(8,2) + '_' + list[i].time.substr(0,2) + '_' + list[i].time.substr(3,2);
+        //let's keep this safe and convert directly to milliseconds, bypassing risks with locale date formats
+        var depTime = (new Date(list[i].date.substr(0,4), list[i].date.substr(5, 2)-1, list[i].date.substr(8, 2), list[i].time.substr(0,2), list[i].time.substr(3,2)));
+
+        list[i].departTime = depTime;
+
+        //Date(year, month[, day[, hour[, minutes[, seconds[, milliseconds]]]]]);
+        console.log('Now: ' + this.now);
+        console.log('Depart: ' + depTime);
+        console.log('Difference: ' + (depTime - this.now));
+        var diff = (list[i].departTime - this.now) /1000 / 60;
+        list[i].untilDeparture = diff;
         list[i].blink = diff < 4;
+        
+        //If passed delete
         if(diff< 0){
           list.splice(i, 1);
         }
       }
+
+      list.sort(function(a, b){
+        // a = new Date(a.date+' '+a.time);
+        // b = new Date(b.date+' '+b.time);
+        return a.departTime<b.departTime?-1:a.departTime>b.departTime?1:0;
+      });
       return list;
     },
   },
@@ -345,10 +365,10 @@ export default {
         }
       );
 
-    // setInterval(this.getNewKey, 3300000);
+    setInterval(this.getNewKey, 3300000);
 
     setInterval(function(){
-      this.now = Date.now();
+      this.now = new Date();
     }.bind(this), 10000);
   }
 }
