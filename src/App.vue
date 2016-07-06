@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="container-fluid vertically-stretched-container">
 
-    <div class="row vertical-stretch">
+    <div class="row vertical-stretch top-row">
       <div class="col-md-6">
         <date-time></date-time>
       </div>
@@ -11,7 +11,7 @@
       
     </div>
 
-    <div class="vertical-stretch">
+    <div class="row vertical-stretch">
       <div class="col-md-12 text-center">
         <toilet-status></toilet-status>
       </div>
@@ -77,10 +77,17 @@ body {
 }
 
 .vertical-stretch {
+  /*border: 2px solid deeppink;*/
   flex: 2;
 }
 
+.top-row {
+  margin-top: 100px;
+}
+
 .bottom-message {
+  /*border: 2px solid deeppink;*/
+  margin-bottom: 100px;
   flex: 1;
   /*background-color: deeppink;*/
   position: relative;
